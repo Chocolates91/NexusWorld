@@ -5,6 +5,7 @@ const CaveWorldScript := preload("res://world/cave_world.gd")
 const PlayerScript := preload("res://player/player.gd")
 const CaveMapScript := preload("res://ui/cave_map.gd")
 const VignetteScript := preload("res://ui/vignette.gd")
+const TouchControlsScript := preload("res://ui/touch_controls.gd")
 
 var world: Node2D
 var player: CharacterBody2D
@@ -31,7 +32,11 @@ func _ready() -> void:
 	player.position = world.get_spawn_position()
 	add_child(player)
 	_build_interface()
-	_connect_agent()
+	if OS.has_feature("web"):
+		api_connected = true
+		agent_label.text = "Vista web: simulación local"
+	else:
+		_connect_agent()
 
 	if smoke_test:
 		_exercise_player_movement()
@@ -95,6 +100,7 @@ func _build_interface() -> void:
 	controls.text = "A/D o ←/→  mover     W/S o ↑/↓  escalar     ESPACIO  saltar     E  interactuar"
 	controls.add_theme_color_override("font_color", Color("91a0ac"))
 	controls.add_theme_font_size_override("font_size", 13)
+	controls.visible = not OS.has_feature("web") and not DisplayServer.is_touchscreen_available()
 	layer.add_child(controls)
 
 	prompt_label = Label.new()
@@ -112,6 +118,10 @@ func _build_interface() -> void:
 
 	var vignette := VignetteScript.new()
 	layer.add_child(vignette)
+
+	var touch_controls := TouchControlsScript.new()
+	touch_controls.visible = OS.has_feature("web") or DisplayServer.is_touchscreen_available()
+	layer.add_child(touch_controls)
 
 
 func _connect_agent() -> void:

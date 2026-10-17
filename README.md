@@ -64,3 +64,20 @@ Comprueba conexión HTTP, movimiento, aterrizaje, escalada, puertas y consistenc
 Los datos persistentes se guardarán más adelante dentro de `data/`, que Git ignora.
 
 Consulta [docs/ADDING_SECTIONS.md](docs/ADDING_SECTIONS.md) para ampliar el mundo.
+
+## Vista web para móvil
+
+La carpeta `web/` contiene una exportación HTML5 sin hilos preparada para alojamiento estático. En esta versión:
+
+- el mundo funciona sin iniciar el servidor Python;
+- el estado de la interfaz indica `Vista web: simulación local`;
+- aparecen controles multitáctiles para desplazarse, escalar, saltar e interactuar;
+- la pantalla se adapta a móviles en horizontal.
+
+Para probarla localmente:
+
+```powershell
+py -m http.server 8000 --directory web
+```
+
+Después abre `http://localhost:8000`. El flujo de GitHub Pages publica esta carpeta cuando se envía la rama `main`.
