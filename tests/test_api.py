@@ -51,6 +51,27 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(status, 400)
         self.assertEqual(body["error"], "message_required")
 
+    def test_message_returns_deterministic_reply(self) -> None:
+        status, body = self.request("/message", {"message": "¿Dónde estás?"})
+        self.assertEqual(status, 200)
+        self.assertEqual(body["reply"], "He recibido: ¿Dónde estás?")
+
+    def test_unknown_route_is_not_found(self) -> None:
+        status, body = self.request("/unknown")
+        self.assertEqual(status, 404)
+        self.assertEqual(body["error"], "not_found")
+
+    def test_invalid_json_is_rejected(self) -> None:
+        request = Request(
+            f"http://127.0.0.1:{self.port}/decide",
+            data=b"{invalid",
+            headers={"Content-Type": "application/json"},
+        )
+        with self.assertRaises(HTTPError) as raised:
+            urlopen(request, timeout=2)
+        self.assertEqual(raised.exception.code, 400)
+        self.assertEqual(json.load(raised.exception)["error"], "invalid_json")
+
 
 if __name__ == "__main__":
     unittest.main()

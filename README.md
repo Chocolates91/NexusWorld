@@ -2,17 +2,18 @@
 
 Prototipo experimental de un mundo virtual 2D con Godot y un controlador de agente en Python.
 
-## Primer prototipo explorable
+## Prototipo explorable — sector ampliado
 
-El sector inicial es una cueva 2D de 2800 × 1550 píxeles diseñada como un pequeño laberinto vertical. Incluye:
+El sector inicial es una cueva 2D de 4800 × 2200 píxeles diseñada como un laberinto vertical. Incluye:
 
-- cuatro zonas conectadas a distintas alturas;
-- diez plataformas, cinco escaleras y varios pozos;
-- movimiento lateral, salto y ascenso o descenso;
-- cámara suave que sigue al personaje;
-- una compuerta operativa y un umbral reservado para una futura ampliación;
-- interfaz con ubicación, profundidad y estado del agente simulado;
-- gráficos provisionales originales dibujados en Godot, sin recursos externos;
+- siete zonas conectadas con rutas altas, medias y profundas;
+- 21 plataformas, 10 escaleras, pozos y pasos alternativos;
+- movimiento lateral con aceleración, salto variable, tolerancia al borde y ascenso o descenso;
+- cámara suave con anticipación de movimiento y recuperación desde caídas;
+- dos compuertas operativas y un umbral reservado para una futura ampliación;
+- interfaz con ubicación, cota, estado del agente y mapa del sector;
+- roca irregular, estratos, siluetas de profundidad, polvo, estalactitas y cristales luminosos;
+- personaje original con animación procedural, linterna y luz dinámica;
 - API HTTP local con un proveedor simulado determinista.
 
 La memoria SQLite, las acciones autónomas y la conversación dentro del juego pertenecen a los siguientes hitos.
@@ -51,6 +52,14 @@ También puedes ejecutar `start_windows.bat`. El script busca los comandos `godo
 ```powershell
 py -m unittest discover -v
 ```
+
+La prueba integrada necesita el servidor Python en ejecución:
+
+```powershell
+godot --headless --path game -- --smoke-test
+```
+
+Comprueba conexión HTTP, movimiento, aterrizaje, escalada, puertas y consistencia del mapa. Al terminar debe mostrar `NEXUS_SMOKE_OK` y `NEXUS_WORLD_OK`.
 
 Los datos persistentes se guardarán más adelante dentro de `data/`, que Git ignora.
 

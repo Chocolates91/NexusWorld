@@ -61,8 +61,13 @@ class NexusRequestHandler(BaseHTTPRequestHandler):
         print(f"[nexus-agent] {format % args}")
 
 
-def create_server(host: str = "127.0.0.1", port: int = 8765) -> ThreadingHTTPServer:
-    return ThreadingHTTPServer((host, port), NexusRequestHandler)
+class NexusServer(ThreadingHTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+
+def create_server(host: str = "127.0.0.1", port: int = 8765) -> NexusServer:
+    return NexusServer((host, port), NexusRequestHandler)
 
 
 def main() -> None:
