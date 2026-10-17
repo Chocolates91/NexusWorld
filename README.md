@@ -80,4 +80,4 @@ Para probarla localmente:
 py -m http.server 8000 --directory web
 ```
 
-Después abre `http://localhost:8000`. El flujo de GitHub Pages publica esta carpeta cuando se envía la rama `main`.
+Después abre `http://localhost:8000`. La rama `gh-pages` contiene esta carpeta preparada para publicarse desde la raíz mediante GitHub Pages.
