@@ -32,9 +32,9 @@ func _ready() -> void:
 	player.position = world.get_spawn_position()
 	add_child(player)
 	_build_interface()
-	if OS.has_feature("web"):
+	if OS.has_feature("web") or OS.has_feature("preview"):
 		api_connected = true
-		agent_label.text = "Vista web: simulación local"
+		agent_label.text = "Vista web: simulación local" if OS.has_feature("web") else "Vista Windows: simulación local"
 	else:
 		_connect_agent()
 

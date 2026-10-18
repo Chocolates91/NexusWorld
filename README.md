@@ -81,3 +81,9 @@ py -m http.server 8000 --directory web
 ```
 
 Después abre `http://localhost:8000`. La rama `gh-pages` contiene esta carpeta preparada para publicarse desde la raíz mediante GitHub Pages.
+
+## Demostración para Windows
+
+La exportación `Windows Desktop` incluye la característica `preview`: ejecuta el mundo con simulación local y no necesita Python, Godot ni instalación. Descomprime el paquete y abre `NexusWorld.exe`.
+
+Windows puede mostrar un aviso de SmartScreen porque el prototipo no está firmado. Usa **Más información → Ejecutar de todas formas** únicamente si has descargado el paquete desde este repositorio.
