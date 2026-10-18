@@ -86,4 +86,6 @@ Después abre `http://localhost:8000`. La rama `gh-pages` contiene esta carpeta 
 
 La exportación `Windows Desktop` incluye la característica `preview`: ejecuta el mundo con simulación local y no necesita Python, Godot ni instalación. Descomprime el paquete y abre `NexusWorld.exe`.
 
+[Descargar NexusWorld para Windows x64](https://raw.githubusercontent.com/Chocolates91/NexusWorld/downloads/NexusWorld-Windows-x64.zip)
+
 Windows puede mostrar un aviso de SmartScreen porque el prototipo no está firmado. Usa **Más información → Ejecutar de todas formas** únicamente si has descargado el paquete desde este repositorio.
