@@ -1,0 +1,6 @@
+import {FOOTPRINT,FIXED,template} from './data/source-plan.js';
+export function inside([x,z],poly){let yes=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>z)!==(b[1]>z)&&x<(b[0]-a[0])*(z-a[1])/(b[1]-a[1])+a[0])yes=!yes;}return yes;}
+export function itemPolygon(it){const a=it.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a),hw=it.w/2,hd=it.d/2;let pts=[[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]];if(it.type==='chaise'){const sd=Math.min(.95,it.d),cw=Math.min(.85,it.w);pts=[[-hw,-hd],[hw,-hd],[hw,hd],[hw-cw,hd],[hw-cw,-hd+sd],[-hw,-hd+sd]];}return pts.map(([x,z])=>{if(it.flip)x=-x;return[it.x+x*c-z*s,it.y+x*s+z*c];});}
+export function overlapsCircle(x,z,r,poly){if(inside([x,z],poly))return true;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],dx=b[0]-a[0],dz=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(z-a[1])*dz)/(dx*dx+dz*dz||1)));if(Math.hypot(x-a[0]-dx*t,z-a[1]-dz*t)<r)return true;}return false;}
+const ignore=new Set(['rug','art','tablelamp','nightlight','headboard','fan','pendant','pendant2','garland','lamp','plant','olive']);
+export function furnitureColliders(){return [...FIXED,...template('A')].filter(i=>!ignore.has(i.type)).map(itemPolygon);}

@@ -1,0 +1,15 @@
+import * as T from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+export const UP=new T.Vector3(0,1,0);
+export function mesh(geometry,material,x=0,y=0,z=0){const m=new T.Mesh(geometry,material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;return m;}
+export function rounded(w,h,d,mat,x=0,y=0,z=0,r=.025){return mesh(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2.1,h/2.1,d/2.1)),mat,x,y+h/2,z);}
+export function box(w,h,d,mat,x=0,y=0,z=0){return mesh(new T.BoxGeometry(w,h,d),mat,x,y+h/2,z);}
+export function cylinder(r,h,mat,x=0,y=0,z=0,rt=r){return mesh(new T.CylinderGeometry(rt,r,h,40),mat,x,y+h/2,z);}
+export function tube(points,r,mat,segments=40){return mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),segments,r,8,false),mat);}
+export function link(a,b,r,mat){const A=new T.Vector3(...a),B=new T.Vector3(...b);const o=cylinder(r,A.distanceTo(B),mat);o.position.copy(A.clone().add(B).multiplyScalar(.5));o.quaternion.setFromUnitVectors(UP,B.sub(A).normalize());return o;}
+export function ellipsoid(x,y,z,rx,ry,rz,mat){const m=mesh(new T.SphereGeometry(1,32,20),mat,x,y,z);m.scale.set(rx,ry,rz);return m;}
+export function pillow(w,h,d,mat,x,y,z,seed=1){const g=new RoundedBoxGeometry(w,h,d,7,Math.min(w,h,d)*.43);const a=g.attributes.position;for(let i=0;i<a.count;i++){let px=a.getX(i),py=a.getY(i),pz=a.getZ(i);const edge=Math.pow(Math.abs(px)/(w/2),4);const wrinkle=.005*Math.sin(px*78+seed)*Math.cos(pz*25+seed);py+=wrinkle*edge;pz+=.006*Math.sin(px*34+py*20+seed)*Math.pow(Math.abs(py)/(h/2),4);a.setXYZ(i,px,py,pz);}g.computeVertexNormals();return mesh(g,mat,x,y+h/2,z);}
+export function seam(w,d,y,mat,x=0,z=0){const r=.055;const pts=[];for(let i=0;i<=96;i++){const a=i/96*Math.PI*2;const c=Math.cos(a),s=Math.sin(a);pts.push([x+Math.sign(c)*Math.pow(Math.abs(c),.25)*(w/2-r),y,z+Math.sign(s)*Math.pow(Math.abs(s),.25)*(d/2-r)]);}return tube(pts,.0022,mat,96);}
+export function lathe(points,mat,x=0,y=0,z=0){return mesh(new T.LatheGeometry(points.map(p=>new T.Vector2(...p)),48),mat,x,y,z);}
+export function batchStatic(group){group.updateMatrixWorld(true);const buckets=new Map();const remove=[];group.traverse(o=>{if(!o.isMesh||Array.isArray(o.material)||o.userData.keep||o.material.transparent)return;const key=o.material.uuid+o.castShadow+o.receiveShadow;let b=buckets.get(key);if(!b){b={mat:o.material,cast:o.castShadow,receive:o.receiveShadow,geos:[]};buckets.set(key,b);}let g=o.geometry.clone();if(g.index)g=g.toNonIndexed();for(const k of Object.keys(g.attributes))if(!['position','normal','uv'].includes(k))g.deleteAttribute(k);g.applyMatrix4(o.matrixWorld);b.geos.push(g);remove.push(o);});remove.forEach(o=>o.removeFromParent());for(const b of buckets.values()){const g=mergeGeometries(b.geos,false);if(!g)continue;const m=mesh(g,b.mat);m.castShadow=b.cast;m.receiveShadow=b.receive;group.add(m);b.geos.forEach(g=>g.dispose());}}

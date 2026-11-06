@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ede8df"><title>Malilla — Interior 03</title></head>
+<body>
+<main id="app">
+  <div id="viewport" aria-label="Visualización tridimensional de la vivienda"></div>
+  <header><a class="brand" href="./"><span class="monogram">m.</span><span>MALILLA<small>INTERIOR 03 · VALÈNCIA</small></span></a><span class="project-note">Una casa para habitar la luz.</span><button id="fullscreen" title="Pantalla completa" aria-label="Pantalla completa">⛶</button></header>
+  <aside class="caption"><span class="eyebrow" id="room-index">01 / 11</span><h1 id="room-title">Salón</h1><p id="room-note">Roble natural, lino y luz mediterránea.</p></aside>
+  <nav class="toolbar" aria-label="Controles de visualización">
+    <label>ESTANCIA<select id="room" aria-label="Estancia"></select></label><i></i>
+    <label>CÁMARA<select id="mode" aria-label="Modo de cámara"><option value="orbit">Libre</option><option value="walk">Caminar</option></select></label><i></i>
+    <label>LUZ<select id="mood" aria-label="Ambiente"><option value="day">Día</option><option value="sunset">Atardecer</option><option value="night">Noche</option></select></label>
+    <label>CALIDAD<select id="quality" aria-label="Calidad gráfica"><option value="high">Alta</option><option value="ultra">Ultra</option></select></label>
+    <button id="roof" aria-pressed="true" title="Mostrar u ocultar techo">Techo <span>●</span></button>
+    <button id="capture" class="capture">Captura 4K <span>↗</span></button>
+  </nav>
+  <footer><span id="hint">Arrastra para girar · rueda para acercarte · botón derecho para desplazar</span><label class="exposure">Exposición <input id="exposure" aria-label="Exposición" type="range" min="0.4" max="1.8" step="0.05" value="1"></label></footer>
+  <div id="walkpad" hidden aria-label="Movimiento táctil"><button data-key="KeyW" aria-label="Avanzar">↑</button><div><button data-key="KeyA" aria-label="Izquierda">←</button><button data-key="KeyS" aria-label="Retroceder">↓</button><button data-key="KeyD" aria-label="Derecha">→</button></div></div>
+  <output id="status" role="status">Preparando materiales e iluminación…</output>
+  <div id="loading"><span class="loading-mark">m.</span><p>Preparando tu visita</p><small>Interior Malilla · materiales y luz</small></div>
+</main><script type="module" src="/src/main.js"></script></body></html>
