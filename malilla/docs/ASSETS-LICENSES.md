@@ -13,3 +13,7 @@
 No se han añadido GLB de origen incierto ni HDRI sin licencia identificada. Blender está instalado, pero la geometría se genera directamente en Three.js para mantener dimensiones paramétricas y evitar modelos sustitutos genéricos. Las superficies tienen base color, normal y roughness. Los metales emplean metalness escalar; el sombreado de contacto usa SSAO y shadow maps. No se han añadido canales AO/height ficticios solo para completar una lista.
 
 Escala: arquitectura UV métrica (muestra de parquet 2,4m, piedra 1,2m); superficies de muebles usan UV de sus primitivas y repetición controlada. Esta última no ofrece la uniformidad texel por metro de un unwrap artístico manual y se registra como limitación. Texturas 2K en los materiales principales; ampliar a 4K sin una fuente de más detalle no aportaría información.
+
+## Acabados de las referencias
+
+`porcelain-white`, `wood-ceramic`, `oak-vanity`, `grey-oak` y `calacatta-warm` se generan con `scripts/reference-textures.py` y semillas fijas. Son 15 mapas adicionales: cuatro conjuntos 2K y una base color de piedra 4K con normal/rugosidad 2K. No se extraen píxeles de las fotos para hacerlos. Los modelos de lavabo integrado, WC, columna de ducha y empotrado de `reference-fixtures.js` también son procedurales originales, inspirados en los elementos visibles y adaptados a las dimensiones fuente.

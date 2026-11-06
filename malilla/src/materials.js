@@ -68,8 +68,31 @@ export function material(color = "#eee8dc", kind = null, opts = {}) {
 }
 export const M = {
   wall: material("#ffffff", "plaster"),
-  floor: material("#ffffff", "oak"),
+  floor: material("#ffffff", "grey-oak", { roughness: 1 }),
   stone: material("#ffffff", "stone"),
+  bathroomTile: material("#ffffff", "porcelain-white", {
+    normalScale: new T.Vector2(0.12, 0.12),
+    roughness: 1,
+    clearcoat: 0.16,
+    clearcoatRoughness: 0.25,
+  }),
+  bathroomFloor: material("#ffffff", "calacatta-warm", {
+    normalScale: new T.Vector2(0.07, 0.07),
+    roughness: 1,
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.24,
+  }),
+  showerWood: material("#ffffff", "wood-ceramic", {
+    normalScale: new T.Vector2(0.14, 0.14),
+    roughness: 1,
+  }),
+  bathGlass: material("#edf2ed", null, {
+    roughness: 0.5,
+    transparent: true,
+    opacity: 0.78,
+    side: T.DoubleSide,
+    depthWrite: false,
+  }),
   terrace: material("#c3b7a3", "stone"),
   wood: material("#e1c6a1", "grain"),
   linen: material("#eae0cf", "fabric"),

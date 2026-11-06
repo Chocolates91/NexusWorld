@@ -1,3 +1,10 @@
+import {
+  referenceSink,
+  referenceToilet,
+  referenceShower,
+  referenceWardrobe,
+} from "./reference-fixtures.js";
+import { referenceSpec } from "./data/reference-spec.js";
 import * as T from "three";
 import { buildLegacyItem } from "./legacy-furniture.js";
 import { M, material } from "./materials.js";
@@ -1217,28 +1224,35 @@ function enrichSecondary(g, it) {
 export function buildFurniture(it, fixed = false) {
   const g = new T.Group();
   g.name = it.name;
-  const fn = {
-    officechair: officeChair,
-    fan,
-    chaise: sofa,
-    sofa,
-    armchair: sofa,
-    sofabed: sofa,
-    bed,
-    chair,
-    bistrochair: chair,
-    barstool: chair,
-    plant,
-    olive: plant,
-    sink,
-    wc,
-    tub,
-    shower,
-    kitchen,
-    tvunit: tv,
-    coffee,
-    rug,
-  }[it.type];
+  const fn =
+    {
+      [referenceSpec.fixtureIds.sink]: referenceSink,
+      [referenceSpec.fixtureIds.toilet]: referenceToilet,
+      [referenceSpec.fixtureIds.shower]: referenceShower,
+    }[it.id] ||
+    {
+      builtin: referenceWardrobe,
+      officechair: officeChair,
+      fan,
+      chaise: sofa,
+      sofa,
+      armchair: sofa,
+      sofabed: sofa,
+      bed,
+      chair,
+      bistrochair: chair,
+      barstool: chair,
+      plant,
+      olive: plant,
+      sink,
+      wc,
+      tub,
+      shower,
+      kitchen,
+      tvunit: tv,
+      coffee,
+      rug,
+    }[it.type];
   if (!fn) {
     const o = buildLegacyItem(it, fixed);
     o.name = it.name;
@@ -1248,6 +1262,7 @@ export function buildFurniture(it, fixed = false) {
   g.position.set(it.x, it.elev || 0, it.y);
   g.rotation.y = (-it.rot * Math.PI) / 180;
   if (it.flip) g.scale.x = -1;
+  g.userData.registerDoorColliders?.();
   return g;
 }
 export function addDecoration(group) {

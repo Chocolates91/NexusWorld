@@ -32,6 +32,15 @@ export const views = [
     area: "13,58 m²",
   },
   {
+    id: "wardrobe",
+    name: "Armario principal",
+    note: "Interior beige, balda y barra · detalles estimados según referencia.",
+    fov: 66,
+    position: [2.7, 1.45, 7.6],
+    target: [4.87, 1.3, 7.1],
+    area: "13,58 m² · dormitorio principal",
+  },
+  {
     id: "study",
     name: "Dormitorio 2 · Estudio",
     note: "Un lugar tranquilo para concentrarse.",
@@ -50,7 +59,7 @@ export const views = [
   {
     id: "bath1",
     name: "Baño principal",
-    note: "Cerámica, piedra y reflejos serenos.",
+    note: "Azulejo blanco, roble y cerámica de veta cálida.",
     fov: 82,
     position: [3.76, 1.58, 8.22],
     target: [4.72, 1.0, 9.24],

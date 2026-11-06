@@ -37,3 +37,7 @@ Se inició la revisión de todas las vistas, navegación y exportación PNG 4K. 
 | 8 Renderizado | Alta/Ultra y PNG 4K verificados; mosaicos no implementados. |
 | 9 Optimización | Agrupación estática, luces limitadas, reflejos próximos, sombras retenidas y render bajo demanda. Falta perfilado GPU real. |
 | 10 QA | Capturas inspeccionadas, correcciones aplicadas y resultados guardados. No equivale a aprobación estética profesional. |
+
+## Hito 4 — Referencias de baño y armario
+
+Se incorporan los acabados observados en las cinco fotografías, manteniendo el contrato geométrico. Nuevos modelos para los sanitarios y el empotrado, nueva cámara de inspección del armario y cinco conjuntos de materiales locales. Se corrige la carcasa maciza que invadía la cubeta del lavabo. Referencias, decisiones y cotas estimadas documentadas en REFERENCES.md. La validación dirigida se registra al final de QA.md.

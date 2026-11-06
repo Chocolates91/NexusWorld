@@ -33,20 +33,7 @@ await page.waitForFunction(() => window.__MALILLA__?.ready, null, {
   timeout: 240000,
 });
 const results = [];
-for (const id of [
-  "living",
-  "dining",
-  "kitchen",
-  "primary",
-  "study",
-  "nursery",
-  "bath1",
-  "bath2",
-  "utility",
-  "entrance",
-  "terrace",
-  "plan",
-]) {
+for (const id of await page.evaluate(() => window.__MALILLA__.views)) {
   await page.evaluate((id) => window.__MALILLA__.setView(id), id);
   await page.waitForTimeout(700);
   await page.screenshot({ path: `artifacts/${id}.png`, timeout: 180000 });

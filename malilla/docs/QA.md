@@ -41,3 +41,19 @@ Esta entrega es una visualización interactiva amueblada y mejorada, con detalle
 3. Incorporar madera, piedra y tejidos fotografiados con procedencia y escala física verificadas; unwrap manual por objeto.
 4. Sustituir vegetación por modelos botánicos de mayor calidad y calibrar vidrio/reflejos.
 5. Perfilar en GPU real, ajustar agrupación espacial y niveles de detalle sin degradar el modo Ultra; después estudiar mosaicos con margen de solapamiento de postprocesado.
+
+## Revisión con las referencias fotográficas
+
+Continuación posterior a la entrega inicial; no sustituye las limitaciones de GI, materiales procedurales o rendimiento de GPU indicadas arriba.
+
+- **8/8 pruebas**: se añaden correspondencia de IDs fijos/cotas estimadas y comprobación de los tamaños reales de los 15 mapas nuevos. El original sigue con el mismo SHA256 y las coordenadas fuente pasan la prueba de paridad.
+- Compilación de producción y formato correctos. El aviso de tamaño del bundle permanece (~983 kB, 324 kB gzip); mapas locales ~18 MB.
+- `CAPTURE_4K=1 node scripts/reference-qa.mjs`: correcto. Inspeccionadas cinco vistas actualizadas (baño principal, armario, dormitorio principal, baño 2 y salón), además del baño principal de noche. Sin errores JS/shader registrados.
+- Comprobación geométrica del lavabo mediante rayo vertical: impacto en la cerámica `fffefa` a Y=0,7336 m, en vez de la carcasa beige a Y=0,805 m que invadía inicialmente la cubeta. Carcasa ahora hueca y fondo cerámico continuo.
+- Dos hojas abiertas del armario con polígonos adicionales; ambos centros bloquean el paseo. Las correderas, los huecos y las envolventes fijas originales no se han desplazado.
+- Nueva captura descargada: `artifacts/references/Malilla-bathroom-3840x2160.png`, **3840 × 2160 reales**, 4.475.712 bytes. Encabezado PNG y dimensiones Pillow comprobados; imagen no vacía y miniatura inspeccionada. No incluye UI ni píxeles de las fotografías.
+- Resultado estructurado en `reference-qa-results.json`. La prueba inicial que leía un módulo de colisiones separado por la caché de Vite se corrigió para consultar una copia de los polígonos usados por la propia navegación.
+- El visor ofrece ahora 13 cámaras, incluida «Armario principal»; la suite general recorre la lista de cámaras automáticamente. En esta revisión se ejecutó la suite visual dirigida, no otra pasada integral de todas las estancias.
+
+![Baño principal actualizado según referencias](media/reference-bathroom.png)
+![Armario con módulo abierto y acabado según referencia](media/reference-wardrobe.png)

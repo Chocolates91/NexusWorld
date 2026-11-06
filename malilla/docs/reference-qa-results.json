@@ -1,0 +1,111 @@
+{
+  "errors": [],
+  "detailChecks": {
+    "basinHit": {
+      "point": [
+        4.09,
+        0.7335925850143661,
+        9.465
+      ],
+      "color": "fffefa"
+    },
+    "leafCount": 2,
+    "leafBlocked": [
+      true,
+      true
+    ]
+  },
+  "results": [
+    {
+      "frames": 3,
+      "cpuRenderSubmitMs": 6045.700000000186,
+      "drawCalls": 521,
+      "triangles": 3468395,
+      "buffer": [
+        1280,
+        900
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "bath1",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "frames": 4,
+      "cpuRenderSubmitMs": 16.90000000037253,
+      "drawCalls": 305,
+      "triangles": 1697941,
+      "buffer": [
+        1280,
+        900
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "wardrobe",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "frames": 5,
+      "cpuRenderSubmitMs": 47.39999999944121,
+      "drawCalls": 178,
+      "triangles": 1235137,
+      "buffer": [
+        1280,
+        900
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "primary",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "frames": 6,
+      "cpuRenderSubmitMs": 15.300000000745058,
+      "drawCalls": 429,
+      "triangles": 2560151,
+      "buffer": [
+        1280,
+        900
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "bath2",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "frames": 7,
+      "cpuRenderSubmitMs": 10,
+      "drawCalls": 175,
+      "triangles": 1475593,
+      "buffer": [
+        1280,
+        900
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "living",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ],
+  "capture": {
+    "width": 3840,
+    "height": 2160,
+    "verifiedBy": "PNG header and Pillow",
+    "bytes": 4475712
+  }
+}

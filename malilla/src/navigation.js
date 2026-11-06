@@ -1,6 +1,9 @@
 import * as T from "three";
 import { FOOTPRINT, FIXED, template } from "./data/source-plan.js";
-import { architectureColliders } from "./data/colliders.js";
+import {
+  architectureColliders,
+  furnitureDetailColliders,
+} from "./data/colliders.js";
 import { inside, overlapsCircle, furnitureColliders } from "./collision.js";
 export function createNavigation(camera, controls, canvas) {
   let walking = false,
@@ -11,8 +14,8 @@ export function createNavigation(camera, controls, canvas) {
   const furniture = furnitureColliders();
   const blocked = (x, z) =>
     !inside([x, z], FOOTPRINT) ||
-    [...architectureColliders, ...furniture].some((poly) =>
-      overlapsCircle(x, z, 0.15, poly),
+    [...architectureColliders, ...furniture, ...furnitureDetailColliders].some(
+      (poly) => overlapsCircle(x, z, 0.15, poly),
     );
   function rotate(dx, dy) {
     look.y -= dx * 0.003;
@@ -74,6 +77,8 @@ export function createNavigation(camera, controls, canvas) {
   }
   return {
     blocked,
+    getDetailColliders: () =>
+      furnitureDetailColliders.map((p) => p.map((v) => [...v])),
     get walking() {
       return walking;
     },

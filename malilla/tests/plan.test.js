@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import crypto from "node:crypto";
+import { referenceSpec } from "../src/data/reference-spec.js";
 import * as plan from "../src/data/source-plan.js";
 import { inside, overlapsCircle, itemPolygon } from "../src/collision.js";
 const original = fs.readFileSync(
@@ -98,3 +99,25 @@ console.log(
   "Original SHA256",
   crypto.createHash("sha256").update(original).digest("hex"),
 );
+
+test("reference finishes retain source fixture IDs and label all inferred dimensions", () => {
+  for (const id of Object.values(referenceSpec.fixtureIds))
+    assert.ok(plan.FIXED.some((f) => f.id === id));
+  assert.equal(referenceSpec.wardrobe.estimated, true);
+  assert.equal(referenceSpec.shower.estimated, true);
+  assert.equal(referenceSpec.wallTile.estimated, true);
+  assert.equal(referenceSpec.shower.screen, false);
+});
+test("reference finish maps have real 2K/4K dimensions and lower resolution supporting maps", () => {
+  for (const [name, colorSize] of Object.entries(referenceSpec.mapSizes))
+    for (const suffix of ["color", "normal", "rough"]) {
+      const file = fs.readFileSync(
+        new URL(`../public/textures/${name}-${suffix}.webp`, import.meta.url),
+      );
+      assert.equal(file.subarray(0, 4).toString(), "RIFF");
+      assert.equal(file.subarray(12, 16).toString(), "VP8 ");
+      const size = suffix === "color" ? colorSize : 2048;
+      assert.equal(file.readUInt16LE(26) & 16383, size);
+      assert.equal(file.readUInt16LE(28) & 16383, size);
+    }
+});

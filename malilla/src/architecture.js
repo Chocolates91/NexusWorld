@@ -41,7 +41,16 @@ export function buildArchitecture() {
   group.add(floor(FOOTPRINT, 0, M.floor, 2.4));
   FLOORS.forEach((f) =>
     group.add(
-      floor(f.poly, 0.007, f.name === "ext" ? M.terrace : M.stone, 1.2),
+      floor(
+        f.poly,
+        0.007,
+        f.name === "ext"
+          ? M.terrace
+          : f.poly.every((p) => p[1] > 8)
+            ? M.bathroomFloor
+            : M.stone,
+        1.2,
+      ),
     ),
   );
   for (const w of WALLS) {
@@ -71,7 +80,7 @@ export function buildArchitecture() {
       horizontal = x1 - x0 > z1 - z0;
     const a = horizontal ? [x0, (z0 + z1) / 2] : [(x0 + x1) / 2, z0],
       b = horizontal ? [x1, (z0 + z1) / 2] : [(x0 + x1) / 2, z1];
-    group.add(windowFrame(a, b, w.sill, w.head, w.door));
+    group.add(windowFrame(a, b, w.sill, w.head, w.door, w.sill === 1.15));
     if (!w.door) architectureColliders.push(rectPoly(w.r));
     else {
       // half of each terrace slider is parked/open; collision matches glass panel.
@@ -93,19 +102,33 @@ export function buildArchitecture() {
     [5, 0.646, 2.98, 0.004],
     [6.486, 1.415, 0.004, 1.55],
     [3.516, 1.415, 0.004, 1.55],
-    [6.0, 2.184, 1.08, 0.004],
+    [5.475, 2.184, 2.03, 0.004],
     [4.603, 9.734, 2.074, 0.004],
     [3.566, 8.916, 0.004, 1.64],
     [5.634, 8.47, 0.004, 0.73],
     [5.634, 9.55, 0.004, 0.37],
-    [5.0, 8.096, 1.08, 0.004],
+    [5.05, 8.096, 1.18, 0.004],
   ]) {
-    const panel = box(w, 2.4, d, M.stone, x, 0.008, z);
+    const panel = box(
+      w,
+      H - 0.016,
+      d,
+      z > 8 ? M.bathroomTile : M.stone,
+      x,
+      0.008,
+      z,
+    );
     panel.geometry.translate(x, 0, z);
     worldUV(panel.geometry, 1.2);
     panel.geometry.translate(-x, 0, -z);
     group.add(panel);
   }
+  // Reference: vertical wood-effect ceramic strip on the shower's south wall.
+  const feature = box(0.676, H - 0.018, 0.005, M.showerWood, 5.3, 0.008, 9.729);
+  feature.geometry.translate(5.3, 0, 9.729);
+  worldUV(feature.geometry, 1.2);
+  feature.geometry.translate(-5.3, 0, -9.729);
+  group.add(feature);
   // Sliding glass to terrace; light linen stacks stay outside the walkable aperture.
   group.add(curtain([7.87, 8.19], [10.42, 8.19], 0, true));
   for (const d of DOORS) {
@@ -212,20 +235,20 @@ export function buildArchitecture() {
   ceiling.add(prism(roofPoly, H, H + 0.12, M.wall));
   return { group, ceiling };
 }
-function windowFrame(a, b, sill, head, slider = false) {
+function windowFrame(a, b, sill, head, slider = false, casement = false) {
   const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
   const g = new T.Group();
   g.position.set((a[0] + b[0]) / 2, 0, (a[1] + b[1]) / 2);
   g.rotation.y = -Math.atan2(b[1] - a[1], b[0] - a[0]);
   for (const yy of [sill, head])
     g.add(box(len, 0.045, 0.07, M.frame, 0, yy, 0));
-  for (const xx of [-len / 2, len / 2, 0])
+  for (const xx of casement ? [-len / 2, len / 2] : [-len / 2, len / 2, 0])
     g.add(box(0.045, head - sill, 0.07, M.frame, xx, sill, 0));
   const glass = box(
     slider ? len / 2 - 0.05 : len - 0.05,
     head - sill - 0.065,
     0.008,
-    M.glass,
+    casement ? M.bathGlass : M.glass,
     slider ? -len / 4 : 0,
     sill + 0.04,
     0,
@@ -233,14 +256,53 @@ function windowFrame(a, b, sill, head, slider = false) {
   glass.castShadow = false;
   g.add(glass);
   if (!slider) g.add(box(len + 0.04, 0.025, 0.21, M.stone, 0, sill - 0.025, 0));
-  g.add(
-    link(
-      [len / 2 - 0.08, sill + 0.5, 0.06],
-      [len / 2 - 0.08, sill + 0.62, 0.06],
-      0.007,
-      M.metal,
-    ),
-  );
+  if (!casement)
+    g.add(
+      link(
+        [len / 2 - 0.08, sill + 0.5, 0.06],
+        [len / 2 - 0.08, sill + 0.62, 0.06],
+        0.007,
+        M.metal,
+      ),
+    );
+  if (casement) {
+    const wide = 0.06;
+    for (const x of [-len / 2 + wide / 2, len / 2 - wide / 2])
+      g.add(rounded(wide, head - sill, 0.055, M.frame, x, sill, -0.018, 0.004));
+    for (const y of [sill, head - wide])
+      g.add(rounded(len - wide * 2, wide, 0.055, M.frame, 0, y, -0.018, 0.004));
+    const gasket = material("#828b85", null, { roughness: 0.75 });
+    for (const x of [-len / 2 + wide, len / 2 - wide])
+      g.add(
+        box(
+          0.006,
+          head - sill - wide * 2,
+          0.006,
+          gasket,
+          x,
+          sill + wide,
+          0.022,
+        ),
+      );
+    for (const y of [sill + wide, head - wide])
+      g.add(box(len - wide * 2, 0.006, 0.006, gasket, 0, y, 0.022));
+    for (const y of [sill + 0.18, head - 0.22])
+      g.add(
+        rounded(0.018, 0.08, 0.028, M.frame, len / 2 - 0.01, y, 0.025, 0.006),
+      );
+    g.add(
+      rounded(
+        0.018,
+        0.115,
+        0.032,
+        M.frame,
+        -len / 2 + 0.047,
+        (sill + head) / 2 - 0.05,
+        0.045,
+        0.007,
+      ),
+    );
+  }
   return g;
 }
 function curtain(a, b, sill, stacks = false) {
