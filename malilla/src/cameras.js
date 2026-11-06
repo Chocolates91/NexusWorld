@@ -84,11 +84,20 @@ export const views = [
     area: "1,35 m²",
   },
   {
+    id: "entry-detail",
+    name: "Entrada · detalles",
+    note: "Carpintería blanca, acero satinado y equipamiento integrado.",
+    fov: 64,
+    position: [8.35, 1.48, 2.4],
+    target: [9.43, 1.18, 0.61],
+    area: "1,95 m² · vestíbulo",
+  },
+  {
     id: "entrance",
     name: "Vestíbulo",
     note: "La transición hacia el interior.",
     position: [9.48, 1.6, 0.95],
-    target: [6.3, 1.1, 2.65],
+    target: [8.95, 1.3, 7.8],
     area: "1,95 m² · distribuidor 7,58 m²",
   },
   {

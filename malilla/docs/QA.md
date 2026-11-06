@@ -57,3 +57,17 @@ Continuación posterior a la entrega inicial; no sustituye las limitaciones de G
 
 ![Baño principal actualizado según referencias](media/reference-bathroom.png)
 ![Armario con módulo abierto y acabado según referencia](media/reference-wardrobe.png)
+
+## Revisión de entrada, salón y carpintería de terraza
+
+- **11/11 pruebas** correctas. Se añaden paridad de huecos de entrada/terraza, apertura central transitable y checksum/dimensiones reales del panorama HDR local. Las 43 paredes y coordenadas del archivo original siguen sin modificarse.
+- Build de producción correcto (~996 kB JS, 329 kB gzip; se conserva el aviso de tamaño). Verificación de formato y diff correctas.
+- Revisadas seis cámaras: detalles de entrada, vestíbulo mirando hacia el salón, salón, comedor, terraza y baño principal. Capturas adicionales del salón al atardecer y entrada de noche. Sin errores JS/shader registrados.
+- Colisiones del modelo inicializado: puerta de entrada cerrada bloqueada; paño fijo bloqueado; paso central de terraza libre. La hoja abierta queda dentro de la envolvente de la terraza. Estos controles verifican las colisiones usadas por el paseo, además de los polígonos puros de la prueba unitaria.
+- Fondo HDR cargado realmente como DataTexture y revisado en la imagen. Es una imagen ambiental genérica de vegetación, no una vista real del inmueble y no una simulación de GI del interior. Las diferencias de luz se obtienen ajustando también sol y relleno; no se atribuyen al fondo por sí solo.
+- Nuevo PNG del salón: **3840 × 2160**, 10.027.808 bytes. Encabezado, dimensiones y varianza de imagen comprobados; miniatura inspeccionada. Está en `artifacts/entry/Malilla-living-3840x2160.png`. La imagen siguiente es una miniatura, no el archivo 4K.
+- Se detectó una captura inicial que mostraba la pantalla de carga. La revisión se repitió esperando a que desaparezca la capa y a que se renderice un nuevo fotograma de cada cámara. La pantalla de carga no se conserva como evidencia del modelo.
+- Datos finales en `entry-qa-results.json`. El visor tiene 14 cámaras; esta revisión ejecuta una selección dirigida, no un benchmark de GPU ni una repetición de toda la suite original.
+
+![Entrada y registros técnicos según referencias](media/entry-details.png)
+![Salón con carpintería y luz revisadas, miniatura del PNG 4K](media/entry-living.png)

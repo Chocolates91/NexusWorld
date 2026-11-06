@@ -342,6 +342,7 @@ manager.onError = (url) => {
 };
 // All assets are same-origin; wait for actual image loads before reporting readiness.
 async function ready() {
+  await light.ready;
   await waitForTextures();
   $("loading").classList.add("done");
   window.__MALILLA__.ready = true;

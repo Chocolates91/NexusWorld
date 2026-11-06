@@ -1,3 +1,4 @@
+import { entryDoor, entranceDetails, terraceGlazing } from "./entry-details.js";
 import * as T from "three";
 import {
   WALLS,
@@ -76,6 +77,10 @@ export function buildArchitecture() {
   for (const w of WINDOWS) {
     if (w.sill > 0) group.add(prism(rectPoly(w.r), 0, w.sill, M.wall));
     group.add(prism(rectPoly(w.r), w.head, H, M.wall));
+    if (w.door && w.r[0] > 7) {
+      group.add(terraceGlazing());
+      continue;
+    }
     const [x0, z0, x1, z1] = w.r,
       horizontal = x1 - x0 > z1 - z0;
     const a = horizontal ? [x0, (z0 + z1) / 2] : [(x0 + x1) / 2, z0],
@@ -131,8 +136,13 @@ export function buildArchitecture() {
   group.add(feature);
   // Sliding glass to terrace; light linen stacks stay outside the walkable aperture.
   group.add(curtain([7.87, 8.19], [10.42, 8.19], 0, true));
+  group.add(entranceDetails());
   for (const d of DOORS) {
     group.add(prism(rectPoly(d.r), DOOR_H, H, M.wall));
+    if (d.name === "Entrada") {
+      group.add(entryDoor());
+      continue;
+    }
     const [x0, z0, x1, z1] = d.r;
     const horizontal = x1 - x0 > z1 - z0;
     const width = horizontal ? x1 - x0 : z1 - z0;
@@ -218,7 +228,7 @@ export function buildArchitecture() {
   // Preserve the original solid 1m parapet, adding only a slim metal coping.
   group.add(
     prism(RAILING.poly, 0, 1, M.wall),
-    box(4.22, 0.025, 0.13, M.metal, 8.325, 1, 9.99),
+    box(4.22, 0.025, 0.13, M.frame, 8.325, 1, 9.99),
   );
   // Lightweight sky only; no building/urban geometry.
   const roofPoly = [

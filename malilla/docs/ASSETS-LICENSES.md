@@ -17,3 +17,7 @@ Escala: arquitectura UV métrica (muestra de parquet 2,4m, piedra 1,2m); superfi
 ## Acabados de las referencias
 
 `porcelain-white`, `wood-ceramic`, `oak-vanity`, `grey-oak` y `calacatta-warm` se generan con `scripts/reference-textures.py` y semillas fijas. Son 15 mapas adicionales: cuatro conjuntos 2K y una base color de piedra 4K con normal/rugosidad 2K. No se extraen píxeles de las fotos para hacerlos. Los modelos de lavabo integrado, WC, columna de ducha y empotrado de `reference-fixtures.js` también son procedurales originales, inspirados en los elementos visibles y adaptados a las dimensiones fuente.
+
+## Fondo exterior ilustrativo
+
+Se incorpora `public/environment/forest_slope_1k.hdr` (1024 × 512), «Forest Slope» de HDRI Haven / Poly Haven, CC0, distribuido en `pmndrs/drei-assets`. Se conserva la atribución, origen y checksum en `public/environment/ATTRIBUTION.md`. Se utiliza únicamente como fondo de vegetación aproximado; no es una vista real de Valencia ni una captura del modelo, y no sustituye la iluminación indirecta de la vivienda por una simulación física. El visor lo carga desde el mismo origen; no requiere CDN al ejecutarse.

@@ -41,3 +41,7 @@ Se inició la revisión de todas las vistas, navegación y exportación PNG 4K. 
 ## Hito 4 — Referencias de baño y armario
 
 Se incorporan los acabados observados en las cinco fotografías, manteniendo el contrato geométrico. Nuevos modelos para los sanitarios y el empotrado, nueva cámara de inspección del armario y cinco conjuntos de materiales locales. Se corrige la carcasa maciza que invadía la cubeta del lavabo. Referencias, decisiones y cotas estimadas documentadas en REFERENCES.md. La validación dirigida se registra al final de QA.md.
+
+## Hito 5 — Entrada, carpintería del salón y luz natural
+
+Puerta y equipamiento de entrada adaptados a las nuevas fotografías; tres paños reales en el hueco existente, con paso central y colisiones; rejilla y descenso de techo estimados. Cámara de entrada añadida y vista longitudinal del salón ajustada. Fondo fotográfico CC0 de vegetación ilustrativa, sin geometría exterior. Iluminación diurna revisada mediante capturas. Validación y evidencia en el apartado final de QA.md.

@@ -1,3 +1,5 @@
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { entrySpec } from "./data/entry-spec.js";
 import * as T from "three";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -128,17 +130,35 @@ export function lighting(scene, renderer, fixtures) {
     return l;
   });
   fixtures.forEach((l) => l.removeFromParent());
-  let mood = "day";
+  let mood = "day",
+    photoSky = null;
+  const ready = new Promise((resolve, reject) => {
+    new RGBELoader().load(
+      `${import.meta.env.BASE_URL}environment/forest_slope_1k.hdr`,
+      (texture) => {
+        texture.mapping = T.EquirectangularReflectionMapping;
+        photoSky = texture;
+        if (mood !== "night") {
+          scene.background = photoSky;
+          scene.backgroundIntensity = mood === "sunset" ? 0.55 : 0.85;
+          scene.backgroundRotation.set(0.16, 1.1, 0);
+        }
+        resolve();
+      },
+      undefined,
+      reject,
+    );
+  });
   const moods = {
     day: {
       sun: 3.2,
-      env: 0.38,
-      hemi: 0.65,
-      window: 4,
+      env: 0.32,
+      hemi: 0.43,
+      window: 2.8,
       lamps: 0.12,
       color: "#fff0da",
       bg: "#dce3e1",
-      pos: [-3, 7, 14],
+      pos: entrySpec.daylight.position,
     },
     sunset: {
       sun: 3.5,
@@ -170,7 +190,15 @@ export function lighting(scene, renderer, fixtures) {
     sun.position.set(...m.pos);
     scene.environmentIntensity = m.env;
     hemi.intensity = m.hemi;
-    scene.background = skyTexture(mood);
+    scene.background =
+      mood !== "night" && photoSky ? photoSky : skyTexture(mood);
+    scene.backgroundIntensity =
+      mood === "night" ? 1 : mood === "sunset" ? 0.55 : 0.85;
+    scene.backgroundRotation.set(
+      mood === "night" ? 0 : 0.16,
+      mood === "night" ? 0 : 1.1,
+      0,
+    );
     windows.forEach((l) => {
       l.intensity = m.window;
       l.color.set(
@@ -191,6 +219,7 @@ export function lighting(scene, renderer, fixtures) {
   }
   return {
     sun,
+    ready,
     set,
     update(camera) {
       const scale = moods[mood].lamps;

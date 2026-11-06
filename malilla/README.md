@@ -17,3 +17,5 @@ La propuesta A es la vista inicial del archivo. El editor original sigue intacto
 Consulta [auditoría](docs/AUDIT.md), [arquitectura](docs/ARCHITECTURE.md), [activos y licencias](docs/ASSETS-LICENSES.md), [registro](docs/PROGRESS.md) y [QA y limitaciones](docs/QA.md). No se ha desplegado públicamente.
 
 Las referencias fotográficas de baño y armario se incorporan en la misma rama. Véase [correspondencia y estimaciones](docs/REFERENCES.md). La vista «Armario principal» permite inspeccionar su interior. `node scripts/reference-qa.mjs` revisa las cinco vistas afectadas; `CAPTURE_4K=1 node scripts/reference-qa.mjs` también verifica un PNG 4K del baño.
+
+Las referencias de entrada y salón añaden la vista «Entrada · detalles», registros técnicos, tres paños de terraza y una iluminación diurna revisada. `CAPTURE_4K=1 node scripts/entry-qa.mjs` verifica las colisiones y exporta el salón. El panorama de vegetación es ilustrativo y conserva su licencia local.

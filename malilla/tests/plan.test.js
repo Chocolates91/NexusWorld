@@ -1,3 +1,4 @@
+import { entrySpec, terraceLeafPlan } from "../src/data/entry-spec.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -120,4 +121,42 @@ test("reference finish maps have real 2K/4K dimensions and lower resolution supp
       assert.equal(file.readUInt16LE(26) & 16383, size);
       assert.equal(file.readUInt16LE(28) & 16383, size);
     }
+});
+
+test("entrance and three-pane terrace joinery retain the original openings", () => {
+  assert.deepEqual(
+    entrySpec.entrance.rect,
+    plan.DOORS.find((d) => d.name === "Entrada").r,
+  );
+  assert.deepEqual(
+    entrySpec.glazing.rect,
+    plan.WINDOWS.find((w) => w.door && w.r[0] > 7).r,
+  );
+  assert.equal(entrySpec.entrance.hinge, "right");
+  assert.equal(entrySpec.glazing.panes, 3);
+  assert.equal(entrySpec.entrance.estimated, true);
+  assert.equal(entrySpec.glazing.estimated, true);
+});
+test("open central terrace leaf leaves a traversable aperture and stays inside the terrace", () => {
+  const leaf = terraceLeafPlan();
+  assert.ok(!overlapsCircle(9.0, leaf.z, 0.15, leaf.poly));
+  assert.ok(leaf.poly.every((p) => inside(p, plan.FOOTPRINT)));
+  const center = leaf.poly.reduce(
+    (s, p) => [s[0] + p[0] / 4, s[1] + p[1] / 4],
+    [0, 0],
+  );
+  assert.ok(overlapsCircle(...center, 0.15, leaf.poly));
+  assert.ok(leaf.width > 0.7);
+  assert.ok(leaf.pane > 0.8);
+});
+
+test("local illustrative HDR panorama has a pinned checksum and real 1K dimensions", () => {
+  const data = fs.readFileSync(
+    new URL("../public/environment/forest_slope_1k.hdr", import.meta.url),
+  );
+  assert.equal(
+    crypto.createHash("sha256").update(data).digest("hex"),
+    "926a6bb81897919b2924f42407162b8d54be91eab2da3fe7fe19daf308cfa09a",
+  );
+  assert.match(data.subarray(0, 512).toString("ascii"), /-Y 512 \+X 1024/);
 });

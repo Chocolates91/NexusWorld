@@ -27,3 +27,19 @@ La foto del armario no permite identificar qué dormitorio es. La apertura de un
 Las fotografías muestran el baño antes de instalar espejo y luminaria. Se mantiene un espejo como propuesta de interior terminado, ahora rectangular y sin marco decorativo grueso; no se presenta como un elemento confirmado por la fotografía. No se reproducen los cables sueltos de obra. El resto de acabados del Baño 2 no se homogeneiza con este baño sin referencia.
 
 Los mapas son interpretaciones procedurales originales, no materiales fotografiados ni productos de un catálogo identificado. El color observado varía con exposición, balance de blancos y luz de cada fotografía; no es una especificación de fabricante.
+
+## Entrada y salón: segunda tanda de referencias
+
+Las cinco fotos siguientes de la conversación muestran la puerta de entrada desde el interior, tres registros técnicos y el salón visto en ambas direcciones. Se conserva la vivienda amueblada de la propuesta original: que las fotos muestren el piso vacío no se interpreta como una petición de retirar sus muebles.
+
+- **Puerta de entrada:** cara interior blanca lisa, herrajes de acero satinado, mirilla, elementos circulares inferiores y cuatro bisagras en el lado derecho. Se corrige el lado de bisagra de la representación anterior para coincidir tanto con la foto como con el eje de giro descrito en el HTML. El hueco 8,94–9,94 m y su posición no cambian. La hoja se muestra cerrada; no se construye nada tras ella.
+- **Telefonillo y mecanismos:** receptor blanco con cable espiral, botones sin marca, interruptor y tomas. No se modela como acabado definitivo el embalaje rojo que aparece en la fotografía de obra.
+- **Registros:** tres tapas verticales, la superior lisa y las dos inferiores con rendijas, fondo oscuro y tirador integrado. Se sitúan sobre el retorno de muro junto a la entrada; son detalles superficiales, no servicios funcionales ni nuevos cuartos.
+- **Falso techo y ventilación:** descenso transversal somero sobre el vestíbulo y rejilla horizontal de impulsión en la zona de estar. Cotas y posición son estimadas por perspectiva; no se desplazan pilares ni tabiques del HTML.
+- **Carpintería de terraza:** tres paños en los 2,55 m del hueco existente, marcos blancos, juntas, umbral y hoja central con manilla y bisagras. Se presenta la central abierta 82° hacia la terraza para dejar paso. Las dos partes fijas y la hoja abierta tienen sus propias colisiones. La foto las muestra cerradas; la apertura es una decisión de navegación, no una medida observada.
+- **Luz:** la dirección de sol se ajusta para generar bandas diagonales de luz y sombra a través de la carpintería. La orientación y hora no se deducen como datos solares certificados. Se rebaja el relleno aproximado para conservar contraste; Día/Atardecer/Noche siguen disponibles.
+- **Pavimento:** se mantiene el roble claro desaturado. No se interpreta la apariencia brillante/manchada de una foto como pavimento permanentemente mojado. El remate del peto se representa blanco, acorde con las fotos.
+
+El fondo de vegetación utiliza el panorama CC0 «Forest Slope» de HDRI Haven / Poly Haven, conservado localmente y revisado visualmente. Es **ilustrativo**, no reproduce la ubicación real ni la vegetación exacta de Malilla. Solo es una imagen de fondo: no añade geometría urbana, jardines ni otro edificio. Las reflexiones/iluminación indirecta interiores siguen siendo aproximadas y no se presentan como un horneado físico del HDRI.
+
+`src/data/entry-spec.js` recoge las referencias de los huecos y las medidas estimadas del equipamiento. El fondo conserva su atribución y checksum en `public/environment/ATTRIBUTION.md`.
