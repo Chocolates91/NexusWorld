@@ -1,0 +1,248 @@
+{
+  "visual": {
+    "errors": [],
+    "results": [
+      {
+        "frames": 2,
+        "drawCalls": 604,
+        "triangles": 4575185,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "living",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 3,
+        "drawCalls": 605,
+        "triangles": 4598981,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "dining",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 4,
+        "drawCalls": 705,
+        "triangles": 4795685,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "kitchen",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 5,
+        "drawCalls": 602,
+        "triangles": 4226869,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "primary",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 6,
+        "drawCalls": 711,
+        "triangles": 4891521,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "study",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 7,
+        "drawCalls": 547,
+        "triangles": 3986845,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "nursery",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 8,
+        "drawCalls": 901,
+        "triangles": 6100079,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "bath1",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 9,
+        "drawCalls": 851,
+        "triangles": 5569579,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "bath2",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 10,
+        "drawCalls": 747,
+        "triangles": 4927421,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "utility",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 11,
+        "drawCalls": 760,
+        "triangles": 4863933,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "entrance",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 12,
+        "drawCalls": 713,
+        "triangles": 4938065,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "terrace",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "frames": 13,
+        "drawCalls": 835,
+        "triangles": 4993733,
+        "buffer": [
+          1200,
+          850
+        ],
+        "walls": 43,
+        "rooms": 11,
+        "furniture": 55,
+        "fixed": 11,
+        "quality": "high",
+        "view": "plan",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      }
+    ]
+  },
+  "functional": {
+    "collision": {
+      "outside": true,
+      "wall": true,
+      "openDoor": false,
+      "living": false
+    },
+    "movement": {
+      "before": [
+        8.45,
+        1.62,
+        4.6499999999999995
+      ],
+      "after": [
+        8.717933817715192,
+        1.62,
+        5.773238692155187
+      ]
+    },
+    "ultra": {
+      "shadow": 4096,
+      "quality": "ultra"
+    },
+    "capture": {
+      "width": 3840,
+      "height": 2160
+    },
+    "errors": [],
+    "stats": {
+      "frames": 13,
+      "drawCalls": 178,
+      "triangles": 1442065,
+      "buffer": [
+        1280,
+        800
+      ],
+      "walls": 43,
+      "rooms": 11,
+      "furniture": 55,
+      "fixed": 11,
+      "quality": "high",
+      "view": "living",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  },
+  "notes": [
+    "Triangle and draw counts include auxiliary passes; no GPU FPS claim.",
+    "Visual room capture run preceded the final night rebalance. Final day/night and 4K capture were checked separately."
+  ]
+}

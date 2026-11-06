@@ -17,4 +17,23 @@
 
 ## Hito 3 — Control visual y rendimiento
 
-En curso: capturas de todas las vistas, pruebas de navegación y exportación PNG 4K, revisión de materiales y luces. No se consideran todas las fases cerradas por compilar. La valoración final y las limitaciones se registran en QA.md.
+Se inició la revisión de todas las vistas, navegación y exportación PNG 4K. No se cerraron las fases únicamente por compilar. Los resultados finales se detallan en el hito siguiente y en QA.md.
+
+## Hito 3 — Validación y correcciones guardadas
+
+- Revisión real de 12 cámaras y 3 ambientes, seguida de correcciones de geometría de detalle, encuadres y equilibrio nocturno.
+- Prueba funcional separada terminada: colisiones, movimiento, Ultra, techo, móvil y descarga PNG 3840 × 2160 real. 6/6 pruebas numéricas y de activos; build de producción correcto.
+- Evidencia, límites y mejoras priorizadas en QA.md. Código formateado y scripts de revisión reproducibles.
+
+| Fase solicitada | Estado concreto |
+|---|---|
+| 1 Auditoría | Contrato extraído, copia verificada y discrepancias documentadas. |
+| 2 Arquitectura | Construcción ejecutable con coordenadas originales y acabados estimados. |
+| 3 Mobiliario | Cobertura completa A + fijos; modelos procedurales principales mejorados. Calidad artística profesional pendiente. |
+| 4 Materiales | PBR con 18 mapas 2K; sin escaneados ni unwrap artístico uniforme. |
+| 5 Iluminación | Tres ambientes probados; GI solo aproximada. Horneado pendiente. |
+| 6 Decoración | Objetos fuente conservados y detalles añadidos; vegetación aún procedural. |
+| 7 Cámaras | 12 vistas y paseo con colisiones, pruebas ejecutadas. |
+| 8 Renderizado | Alta/Ultra y PNG 4K verificados; mosaicos no implementados. |
+| 9 Optimización | Agrupación estática, luces limitadas, reflejos próximos, sombras retenidas y render bajo demanda. Falta perfilado GPU real. |
+| 10 QA | Capturas inspeccionadas, correcciones aplicadas y resultados guardados. No equivale a aprobación estética profesional. |

@@ -1,18 +1,214 @@
-import * as T from 'three';
-import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {box,cylinder} from './geometry.js';
-import {material,M} from './materials.js';
-export function lighting(scene,renderer,fixtures){RectAreaLightUniformsLib.init();const generator=new T.PMREMGenerator(renderer),room=new RoomEnvironment();const env=generator.fromScene(room,.04);scene.environment=env.texture;room.dispose();generator.dispose();scene.environmentIntensity=.40;
- const hemi=new T.HemisphereLight('#e5edf3','#b4a28a',.6);scene.add(hemi);
- const sun=new T.DirectionalLight('#fff0d5',3.2);sun.position.set(-3,7,14);sun.target.position.set(5,0,4);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:35});sun.shadow.normalBias=.015;sun.shadow.bias=-.00015;sun.shadow.radius=3;scene.add(sun,sun.target);
- const windows=[];for(const [x,y,z,w,h,tx,tz]of[[8.9,1.35,8.34,2.4,2.05,8.9,5],[.14,1.55,2.39,1.5,1.25,2.5,2.39],[.14,1.55,4.72,1.2,1.25,2.5,4.72],[.25,1.55,7.8,.8,1.25,2.2,7.8],[.69,1.55,9.25,.8,1.25,2.2,7.8],[6.53,1.2,8.34,.8,2.05,6.53,5.5]]){const l=new T.RectAreaLight('#ecf2f6',3.5,w,h);l.position.set(x,y,z);l.lookAt(tx,y,tz);scene.add(l);windows.push(l);}
- const ceilingSpots=[];for(const [x,z]of[[8.6,2.2],[8.5,5.2],[8.4,7.4],[1.7,1.8],[1.8,4.8],[2.5,8.8],[4.9,1.4],[4.5,8.9],[6.3,6.2],[4.1,3.7]]){scene.add(cylinder(.055,.018,M.frame,x,2.525,z));scene.add(cylinder(.038,.003,material('#f8e8c7',null,{emissive:'#ffe3b0',emissiveIntensity:1}),x,2.52,z));const l=new T.SpotLight('#ffe2b8',17,6,1.15,.75,2);l.position.set(x,2.48,z);l.target.position.set(x,0,z);l.userData.power=17;scene.add(l,l.target);ceilingSpots.push(l);}
- // Three near-room shadows, plus daylight: genuine occlusion, bounded GPU cost.
- ceilingSpots.slice(0,3).forEach(l=>{l.castShadow=true;l.shadow.mapSize.set(1024,1024);l.shadow.bias=-.0004;l.shadow.normalBias=.012;});
- // Pool the nearest eight lamp lights instead of compiling dozens into every material shader.
- const pool=Array.from({length:8},()=>{const l=new T.PointLight('#ffd1a0',0,5,2);scene.add(l);return l;});fixtures.forEach(l=>l.removeFromParent());
- let mood='day';const moods={day:{sun:3.2,env:.38,hemi:.65,window:4,lamps:.12,color:'#fff0da',bg:'#dce3e1',pos:[-3,7,14]},sunset:{sun:3.5,env:.25,hemi:.35,window:2.6,lamps:.6,color:'#ffbd76',bg:'#c6b19d',pos:[-8,3.7,15]},night:{sun:.03,env:.075,hemi:.08,window:.12,lamps:1.4,color:'#adc5eb',bg:'#18242e',pos:[-3,7,14]}};
- function set(value){mood=value;const m=moods[mood];sun.intensity=m.sun;sun.color.set(m.color);sun.position.set(...m.pos);scene.environmentIntensity=m.env;hemi.intensity=m.hemi;scene.background=new T.Color(m.bg);windows.forEach(l=>{l.intensity=m.window;l.color.set(mood==='sunset'?'#ffd1a0':mood==='night'?'#7894bd':'#edf3fa');});ceilingSpots.forEach(l=>l.intensity=l.userData.power*m.lamps);scene.traverse(o=>{if(o.material?.userData?.lampBase!==undefined)o.material.emissiveIntensity=o.material.userData.lampBase*(mood==='day'?.2:1);});document.body.classList.toggle('night',mood==='night');}
- return{sun,set,update(camera){const scale=moods[mood].lamps;fixtures.forEach(f=>f.updateWorldMatrix(true,false));const nearby=fixtures.map(f=>({f,p:f.getWorldPosition(new T.Vector3())})).sort((a,b)=>a.p.distanceToSquared(camera.position)-b.p.distanceToSquared(camera.position)).slice(0,8);nearby.forEach(({f,p},i)=>{pool[i].position.copy(p);pool[i].color.copy(f.color);pool[i].intensity=(f.userData.power||f.intensity)*scale;pool[i].distance=f.distance||5;});}};
+import * as T from "three";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { box, cylinder } from "./geometry.js";
+import { material, M } from "./materials.js";
+const skies = {};
+function skyTexture(mood) {
+  if (skies[mood]) return skies[mood];
+  const c = document.createElement("canvas");
+  c.width = 2048;
+  c.height = 1024;
+  const x = c.getContext("2d"),
+    g = x.createLinearGradient(0, 0, 0, 1024);
+  const colors =
+    mood === "night"
+      ? ["#122132", "#354859", "#484e50"]
+      : mood === "sunset"
+        ? ["#758b9f", "#e3bf99", "#b9afa0"]
+        : ["#8eb4c8", "#e0e8e6", "#c9c4b7"];
+  g.addColorStop(0, colors[0]);
+  g.addColorStop(0.52, colors[1]);
+  g.addColorStop(1, colors[2]);
+  x.fillStyle = g;
+  x.fillRect(0, 0, 2048, 1024);
+  for (let k = 0; k < 24; k++) {
+    const xx = (k * 233) % 2048,
+      yy = 210 + ((k * 71) % 250),
+      r = 90 + ((k * 29) % 140);
+    const cloud = x.createRadialGradient(xx, yy, 0, xx, yy, r);
+    cloud.addColorStop(0, mood === "night" ? "#c0d0dd08" : "#ffffff20");
+    cloud.addColorStop(1, "#ffffff00");
+    x.fillStyle = cloud;
+    x.fillRect(xx - r, yy - r, r * 2, r * 2);
+  }
+  const t = new T.CanvasTexture(c);
+  t.colorSpace = T.SRGBColorSpace;
+  t.mapping = T.EquirectangularReflectionMapping;
+  return (skies[mood] = t);
+}
+export function lighting(scene, renderer, fixtures) {
+  RectAreaLightUniformsLib.init();
+  const generator = new T.PMREMGenerator(renderer),
+    room = new RoomEnvironment();
+  const env = generator.fromScene(room, 0.04);
+  scene.environment = env.texture;
+  room.dispose();
+  generator.dispose();
+  scene.environmentIntensity = 0.4;
+  const hemi = new T.HemisphereLight("#e5edf3", "#b4a28a", 0.6);
+  scene.add(hemi);
+  const sun = new T.DirectionalLight("#fff0d5", 3.2);
+  sun.position.set(-3, 7, 14);
+  sun.target.position.set(5, 0, 4);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, {
+    left: -8,
+    right: 8,
+    top: 8,
+    bottom: -8,
+    near: 0.1,
+    far: 35,
+  });
+  sun.shadow.normalBias = 0.015;
+  sun.shadow.bias = -0.00015;
+  sun.shadow.radius = 3;
+  scene.add(sun, sun.target);
+  const windows = [];
+  for (const [x, y, z, w, h, tx, tz] of [
+    [8.9, 1.35, 8.34, 2.4, 2.05, 8.9, 5],
+    [0.14, 1.55, 2.39, 1.5, 1.25, 2.5, 2.39],
+    [0.14, 1.55, 4.72, 1.2, 1.25, 2.5, 4.72],
+    [0.25, 1.55, 7.8, 0.8, 1.25, 2.2, 7.8],
+    [0.69, 1.55, 9.25, 0.8, 1.25, 2.2, 7.8],
+    [6.53, 1.2, 8.34, 0.8, 2.05, 6.53, 5.5],
+  ]) {
+    const l = new T.RectAreaLight("#ecf2f6", 3.5, w, h);
+    l.position.set(x, y, z);
+    l.lookAt(tx, y, tz);
+    scene.add(l);
+    windows.push(l);
+  }
+  const ceilingSpots = [];
+  for (const [x, z] of [
+    [8.6, 2.2],
+    [8.5, 5.2],
+    [8.4, 7.4],
+    [1.7, 1.8],
+    [1.8, 4.8],
+    [2.5, 8.8],
+    [4.9, 1.4],
+    [4.5, 8.9],
+    [6.3, 6.2],
+    [4.1, 3.7],
+  ]) {
+    scene.add(cylinder(0.055, 0.018, M.frame, x, 2.525, z));
+    scene.add(
+      cylinder(
+        0.038,
+        0.003,
+        material("#f8e8c7", null, {
+          emissive: "#ffe3b0",
+          emissiveIntensity: 1,
+        }),
+        x,
+        2.52,
+        z,
+      ),
+    );
+    const l = new T.SpotLight("#ffe2b8", 17, 6, 1.15, 0.75, 2);
+    l.position.set(x, 2.48, z);
+    l.target.position.set(x, 0, z);
+    l.userData.power = 17;
+    scene.add(l, l.target);
+    ceilingSpots.push(l);
+  }
+  // Three near-room shadows, plus daylight: genuine occlusion, bounded GPU cost.
+  ceilingSpots.slice(0, 3).forEach((l) => {
+    l.castShadow = true;
+    l.shadow.mapSize.set(1024, 1024);
+    l.shadow.bias = -0.0004;
+    l.shadow.normalBias = 0.012;
+  });
+  // Pool the nearest eight lamp lights instead of compiling dozens into every material shader.
+  const pool = Array.from({ length: 8 }, () => {
+    const l = new T.PointLight("#ffd1a0", 0, 5, 2);
+    scene.add(l);
+    return l;
+  });
+  fixtures.forEach((l) => l.removeFromParent());
+  let mood = "day";
+  const moods = {
+    day: {
+      sun: 3.2,
+      env: 0.38,
+      hemi: 0.65,
+      window: 4,
+      lamps: 0.12,
+      color: "#fff0da",
+      bg: "#dce3e1",
+      pos: [-3, 7, 14],
+    },
+    sunset: {
+      sun: 3.5,
+      env: 0.25,
+      hemi: 0.35,
+      window: 2.6,
+      lamps: 0.6,
+      color: "#ffbd76",
+      bg: "#c6b19d",
+      pos: [-8, 3.7, 15],
+    },
+    night: {
+      sun: 0.03,
+      env: 0.22,
+      hemi: 0.35,
+      window: 0.2,
+      lamps: 0.65,
+      color: "#adc5eb",
+      bg: "#18242e",
+      pos: [-3, 7, 14],
+    },
+  };
+  function set(value) {
+    renderer.shadowMap.needsUpdate = true;
+    mood = value;
+    const m = moods[mood];
+    sun.intensity = m.sun;
+    sun.color.set(m.color);
+    sun.position.set(...m.pos);
+    scene.environmentIntensity = m.env;
+    hemi.intensity = m.hemi;
+    scene.background = skyTexture(mood);
+    windows.forEach((l) => {
+      l.intensity = m.window;
+      l.color.set(
+        mood === "sunset"
+          ? "#ffd1a0"
+          : mood === "night"
+            ? "#7894bd"
+            : "#edf3fa",
+      );
+    });
+    ceilingSpots.forEach((l) => (l.intensity = l.userData.power * m.lamps));
+    scene.traverse((o) => {
+      if (o.material?.userData?.lampBase !== undefined)
+        o.material.emissiveIntensity =
+          o.material.userData.lampBase * (mood === "day" ? 0.2 : 1);
+    });
+    document.body.classList.toggle("night", mood === "night");
+  }
+  return {
+    sun,
+    set,
+    update(camera) {
+      const scale = moods[mood].lamps;
+      fixtures.forEach((f) => f.updateWorldMatrix(true, false));
+      const nearby = fixtures
+        .map((f) => ({ f, p: f.getWorldPosition(new T.Vector3()) }))
+        .sort(
+          (a, b) =>
+            a.p.distanceToSquared(camera.position) -
+            b.p.distanceToSquared(camera.position),
+        )
+        .slice(0, 8);
+      nearby.forEach(({ f, p }, i) => {
+        pool[i].position.copy(p);
+        pool[i].color.copy(f.color);
+        pool[i].intensity = (f.userData.power || f.intensity) * scale;
+        pool[i].distance = f.distance || 5;
+      });
+    },
+  };
 }
